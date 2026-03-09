@@ -1,5 +1,6 @@
-.mcp_chroma
-__pycache__
+# ── Python / Django MCP ──────────────────────────────────────────────────────
+.mcp_chroma/
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
@@ -9,8 +10,32 @@ __pycache__
 *.bak
 *.tmp
 *.swp
-.DS_Store
-.venv
-env
 venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ── Node / React (future) ────────────────────────────────────────────────────
+node_modules/
+.next/
+.nuxt/
+dist/
+build/
+.cache/
+*.local
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ── Editors & OS ─────────────────────────────────────────────────────────────
+.DS_Store
 .idea/
+.vscode/settings.json
+*.swp
+*.swo
+Thumbs.db
