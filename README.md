@@ -15,9 +15,13 @@ ai-dev-agent-kit/
 │   ├── django_mcp/               ✅ Django + DRF
 │   └── react_mcp/                🔜 React (coming soon)
 │
-└── skills/                       ← AI coding skills (one folder per framework)
-    ├── django skills/             ✅ Django + DRF
-    └── react skills/              🔜 React (coming soon)
+├── skills/                       ← On-demand AI coding templates (invoke manually)
+│   ├── django skills/             ✅ Django + DRF
+│   └── react skills/              🔜 React (coming soon)
+│
+└── hooks/                        ← Always-on coding rules (auto-loaded by AI tools)
+    ├── django hooks/              ✅ Django + DRF
+    └── react hooks/               🔜 React (coming soon)
 ```
 
 ---
@@ -41,6 +45,15 @@ Skills are structured Markdown files that tell the AI exactly how to generate or
 |--------------|-------|--------|
 | [`skills/django skills/`](skills/README.md) | Django + DRF | `create-feature`, `create-model`, `create-repository`, `create-service`, `create-serializer`, `create-view`, `fix-coding-structure` |
 | `skills/react skills/` | React | 🔜 Coming soon |
+
+### `hooks/` — Always-On Coding Rules
+
+Hooks are persistent instruction files that AI tools read **automatically** for every conversation in a project. No invocation needed — the AI always knows your architecture and coding rules.
+
+| Hooks folder | Stack | Content |
+|--------------|-------|---------|
+| [`hooks/django hooks/`](hooks/README.md) | Django + DRF | 4-layer architecture, import order, model/repo/service/view rules, queryset rules |
+| `hooks/react hooks/` | React | 🔜 Coming soon |
 
 ---
 
@@ -71,7 +84,22 @@ for skill in "$SKILLS_SOURCE"/*/; do
 done
 ```
 
-See [`skills/README.md`](skills/README.md) for setup instructions for every tool.
+See [`skills/README.md`](skills/README.md) for setup instructions for every tool (including Claude Code).
+
+### 3. Hooks — deploy to your project
+
+```bash
+HOOK_SOURCE="$(pwd)/hooks/django hooks/HOOK.md"
+cd path/to/your/django/project
+
+cp "$HOOK_SOURCE" CLAUDE.md                                   # Claude Code
+cp "$HOOK_SOURCE" .github/copilot-instructions.md             # GitHub Copilot
+cp "$HOOK_SOURCE" .cursorrules                                # Cursor
+cp "$HOOK_SOURCE" .windsurfrules                              # Windsurf
+mkdir -p .kiro/steering && cp "$HOOK_SOURCE" .kiro/steering/django-coding-rules.md
+```
+
+See [`hooks/README.md`](hooks/README.md) for full setup instructions.
 
 ---
 
@@ -79,6 +107,8 @@ See [`skills/README.md`](skills/README.md) for setup instructions for every tool
 
 ```
 Your Django project
+       │
+       ├── CLAUDE.md / .cursorrules / .windsurfrules  ← Hooks: always-on rules (architecture, conventions)
        │
        ├── .github/skills/          ← Skills: teach the AI HOW to write code
        │   ├── create-model/
@@ -90,11 +120,11 @@ Your Django project
        └── .vscode/mcp.json            ← MCP server connection config
 ```
 
-- **Skills** define *how* code should be written (patterns, templates, rules)
-- **MCP server** provides *live project awareness* (actual models, apps, migrations, circular imports)
-- **`ai_project_overview.md`** gives the AI the domain context (what the project does, its apps, decisions)
-
-Used together, the AI generates code that matches your exact architecture on the first attempt.
+| | What it answers | When it runs |
+|--|----------------|-------------|
+| **Hooks** | "What rules should I always follow?" | Every conversation, automatically |
+| **Skills** | "What's the exact template for a service?" | When you invoke `/create-service` |
+| **MCP** | "What models actually exist right now?" | When the AI calls a tool |
 
 ---
 
@@ -102,8 +132,10 @@ Used together, the AI generates code that matches your exact architecture on the
 
 - [x] Django + DRF MCP server
 - [x] Django coding skills (7 skills)
+- [x] Django coding hooks (always-on rules for Copilot, Claude, Cursor, Windsurf, Kiro, Continue, Antigravity)
 - [ ] React MCP server
 - [ ] React coding skills
+- [ ] React coding hooks
 - [ ] Next.js skills
 - [ ] Shared/agnostic skills (git conventions, PR descriptions, code review)
 
@@ -111,12 +143,13 @@ Used together, the AI generates code that matches your exact architecture on the
 
 ## Contributing
 
-Each framework lives in its own isolated folder under `mcp/` and `skills/`.  
+Each framework lives in its own isolated folder under `mcp/`, `skills/`, and `hooks/`.  
 To add a new framework:
 
 1. Create `mcp/<framework>_mcp/` with its own `server.py`, `tools/`, and `README.md`
 2. Create `skills/<framework> skills/` with a `SKILL.md` per skill and a `README.md`
-3. Update this root README
+3. Create `hooks/<framework> hooks/` with a `HOOK.md` containing always-active coding rules
+4. Update this root README
 
 ---
 

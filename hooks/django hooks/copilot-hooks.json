@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "cat .github/copilot-instructions.md 2>/dev/null || true"
+      }
+    ]
+  }
+}

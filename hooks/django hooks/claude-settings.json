@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat \"$CLAUDE_PROJECT_DIR/CLAUDE.md\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path // empty'); [[ \"$FILE\" == *.py ]] && python -m isort \"$FILE\" --quiet 2>/dev/null; [[ \"$FILE\" == *.py ]] && python -m black \"$FILE\" --quiet 2>/dev/null; exit 0"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path // empty'); for p in \".env\" \".env.local\" \"settings.py\" \"migrations/\"; do [[ \"$FILE\" == *\"$p\"* ]] && echo \"Blocked: $FILE is protected\" >&2 && exit 2; done; exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}

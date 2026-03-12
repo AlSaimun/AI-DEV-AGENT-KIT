@@ -63,6 +63,47 @@ your-django-project/
 
 ---
 
+### Claude Code
+
+Claude Code auto-discovers custom skills from `.claude/skills/` in your project root.  
+For global access across all projects, use `~/.claude/skills/` instead.
+
+```
+your-django-project/
+└── .claude/
+    └── skills/
+        ├── create-feature/
+        │   └── SKILL.md
+        ├── create-model/
+        │   └── SKILL.md
+        ├── create-repository/
+        │   └── SKILL.md
+        ├── create-service/
+        │   └── SKILL.md
+        ├── create-serializer/
+        │   └── SKILL.md
+        ├── create-view/
+        │   └── SKILL.md
+        └── fix-coding-structure/
+            └── SKILL.md
+```
+
+**Steps:**
+1. Copy each skill folder (the whole directory, not just the `.md` file) into `.claude/skills/`.
+2. Claude Code discovers skills automatically — no restart needed.
+3. Describe your task naturally in the Claude Code terminal. Claude reads the `description` field from each `SKILL.md` front-matter and activates the matching skill automatically:
+
+```
+Create a model for UserProfile in the users app with name, email, and is_verified fields
+Add a service for billing Invoice
+Build a full feature for the orders app — Order model with product_id, quantity, and status
+Fix the coding structure in apps/users/api/v1/views/user_view.py
+```
+
+No slash command or invocation syntax needed — Claude selects the right skill from context.
+
+---
+
 ### Cursor
 
 Cursor reads instruction files from `.cursor/rules/` in your project root.  
@@ -201,6 +242,13 @@ mkdir -p .github/skills
 for skill in create-feature create-model create-repository create-service create-serializer create-view fix-coding-structure; do
   mkdir -p ".github/skills/$skill"
   cp "$SKILLS_SOURCE/$skill/SKILL.md" ".github/skills/$skill/SKILL.md"
+done
+
+# Claude Code (copies full skill directories — Claude needs the folder, not just the file)
+mkdir -p .claude/skills
+for skill in create-feature create-model create-repository create-service create-serializer create-view fix-coding-structure; do
+  mkdir -p ".claude/skills/$skill"
+  cp "$SKILLS_SOURCE/$skill/SKILL.md" ".claude/skills/$skill/SKILL.md"
 done
 
 # Cursor
